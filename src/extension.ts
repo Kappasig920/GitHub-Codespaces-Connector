@@ -34,7 +34,7 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.showQuickPick(quickPickItems).then((selection) => {
         if (selection) {
           const selectedCodespace = selection.label;
-          const repoName = selection.repository;
+          const repoName = selection.repository.replace('/', '-');
 
           vscode.window.showInformationMessage(`Fetching SSH config for ${selectedCodespace}...`);
           exec(`gh codespace ssh --config -c ${selectedCodespace}`, (err, sshConfigOutput) => {
@@ -68,7 +68,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
             fs.writeFileSync(sshConfigPath, finalConfigContent);
             
-            vscode.commands.executeCommand('vscode.newWindow', { remoteAuthority: `ssh-remote+${repoName}` });
+            const simpleRepoName = repoName.split('-')[1];
+            const folderUri = vscode.Uri.parse(`vscode-remote://ssh-remote+${repoName}/workspaces/${simpleRepoName}`);
+            vscode.commands.executeCommand('vscode.openFolder', folderUri, { forceNewWindow: true });
           });
         }
       });

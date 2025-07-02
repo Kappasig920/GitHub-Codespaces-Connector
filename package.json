@@ -2,7 +2,7 @@
   "name": "github-codespaces-connector",
   "displayName": "GitHub Codespaces Connector",
   "description": "Connect to GitHub Codespaces using gh CLI",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "SmartManoj",
   "repository": {
     "type": "git",
